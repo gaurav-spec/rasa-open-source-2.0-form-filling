@@ -1,7 +1,6 @@
 version: "2.0"
 
 rules:
-
 - rule: Say goodbye anytime the user says goodbye
   steps:
   - intent: goodbye
@@ -11,3 +10,41 @@ rules:
   steps:
   - intent: bot_challenge
   - action: utter_iamabot
+
+- rule: Rule which will not wait for user message once it was applied
+  steps:
+  - intent: greet
+  - action: utter_greet
+  wait_for_user_input: false
+
+- rule: Rule which will not wait for user message once it was applied
+  steps:
+  - intent : certificate
+  - action : utter_certificate
+  - action : utter_did_that_help
+  wait_for_user_input: false
+
+- rule: Rule which will not wait for user message once it was applied
+  steps:
+  - intent : mood_great
+  - action : utter_thanks
+  wait_for_user_input: false
+- rule : Activate form
+  steps :
+  - intent: tell_name
+  - action: utter_name
+  - action: user_details_form
+  - active_loop: user_details_form
+
+- rule : Submit form
+  condition :
+# Condition that form is active.
+  - active_loop : user_details_form
+  steps :
+# Form is deactivated
+  - action : user_details_form
+  - active_loop : null
+  - slot_was_set :
+    - requested_slot : null
+    # The actions we want to run when the form is submitted.
+  - action: action_submit
